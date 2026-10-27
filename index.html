@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Photo Detector</title>
+    <meta
+      name="description"
+      content="Upload a photo to estimate whether it is likely AI-generated or a real camera image."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand-block">
+          <div class="brand-mark">AI</div>
+          <div>
+            <p class="eyebrow">Image analysis</p>
+            <h1>AI Photo Detector</h1>
+          </div>
+        </div>
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle theme">
+          <span class="theme-toggle-icon">🌙</span>
+        </button>
+      </header>
+
+      <main class="container">
+        <section class="card upload-card">
+          <div
+            id="dropZone"
+            class="drop-zone"
+            tabindex="0"
+            aria-label="Upload image" 
+          >
+            <input id="fileInput" type="file" accept="image/jpeg,image/png,image/webp" hidden />
+
+            <div id="emptyUploadState" class="upload-state">
+              <div class="upload-icon">🖼️</div>
+              <h2>Upload a photo</h2>
+              <p>Drag and drop, paste, or choose an image from your device.</p>
+              <div class="upload-actions">
+                <button id="browseBtn" class="primary-button" type="button">Choose file</button>
+                <button id="removeBtn" class="ghost-button hidden" type="button">Remove</button>
+              </div>
+              <small>JPG, PNG, or WEBP · up to 10 MB</small>
+            </div>
+
+            <div id="previewWrap" class="preview-wrap hidden" aria-live="polite">
+              <img id="previewImage" alt="Selected preview" />
+              <div class="preview-meta">
+                <span id="fileName">image.jpg</span>
+                <span id="fileSize">0 KB</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="api-key-wrap">
+            <label for="apiKeyInput">Gemini API key</label>
+            <div class="api-key-input-row">
+              <input
+                id="apiKeyInput"
+                type="password"
+                placeholder="Paste your Gemini API key"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button id="analyzeBtn" class="primary-button" type="button" disabled>
+              Analyze
+            </button>
+          </div>
+        </section>
+
+        <section id="resultsPanel" class="card results-card hidden" aria-live="polite">
+          <div class="result-header">
+            <div class="gauge-wrap">
+              <svg class="gauge" viewBox="0 0 160 160" role="img" aria-label="AI probability gauge">
+                <circle class="gauge-base" cx="80" cy="80" r="58"></circle>
+                <circle id="gaugeValueCircle" class="gauge-fill" cx="80" cy="80" r="58"></circle>
+              </svg>
+              <div class="gauge-content">
+                <strong id="gaugeValue">0%</strong>
+                <span>AI likelihood</span>
+              </div>
+            </div>
+
+            <div class="result-summary">
+              <span id="verdictBadge" class="verdict-badge neutral">Uncertain</span>
+              <h2 id="resultTitle">Ready to analyze</h2>
+              <p id="resultSummary">Upload an image and let Gemini estimate whether it looks AI-generated or real.</p>
+            </div>
+          </div>
+
+          <div class="result-body">
+            <div class="info-box clues-box">
+              <h3>Clues</h3>
+              <ul id="cluesList"></ul>
+            </div>
+
+            <div class="info-box metadata-box">
+              <h3>Metadata findings</h3>
+              <div id="metadataInfo" class="metadata-list"></div>
+            </div>
+          </div>
+
+          <p class="disclaimer">This is an AI-based estimate and can be wrong. Don't treat it as proof.</p>
+          <button id="newAnalysisBtn" class="secondary-button" type="button">Analyze another image</button>
+        </section>
+
+        <div id="statusMessage" class="status-message" aria-live="polite"></div>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/lite.umd.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>
